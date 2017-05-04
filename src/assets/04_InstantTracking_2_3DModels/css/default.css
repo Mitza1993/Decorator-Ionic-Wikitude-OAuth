@@ -1,0 +1,92 @@
+body {
+    margin: 0;
+}
+
+@media only screen and (orientation: landscape) {
+  .inputs-container {
+    height: 250px;
+    margin-right: -30px;
+  }
+
+  #tracking-model-select-container {
+    max-height: 300px;
+  }
+
+  #tracking-model-reset-button-container input {
+    width: 60%;
+  }
+
+}
+
+@media only screen and (orientation: portrait) {
+  .inputs-container {
+    height: 600px;
+    margin-right: 10px;
+  }
+
+  #tracking-model-reset-button-container input {
+    width: 100%;
+  }
+
+  #tracking-model-select-container {
+    max-height: 600px;
+  }
+}
+
+.inputs-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+}
+
+#tracking-model-reset-button-container input {
+    padding-right: 5px;
+    padding-top: 5px;
+}
+
+#tracking-model-select-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 2px solid white;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+#tracking-controls-container-lower {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#tracking-start-stop-button {
+    display: inline-block;
+    width: 14%;
+    max-width: 100px;
+}
+
+#tracking-height-slider-container {
+    text-align: left;
+}
+
+#tracking-height-slider-container-inner {
+    display: inline-block;
+    width: 75%;
+    max-width: 350px;
+    padding-left: 10px;
+}
+
+.tracking-model-select-button {
+  display: inline-block;
+  width: 50px;
+  height: 100%;
+  margin-bottom: 10px;
+}
