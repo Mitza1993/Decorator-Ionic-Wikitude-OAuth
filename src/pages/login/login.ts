@@ -30,10 +30,16 @@ export class LoginPage {
       .then((user) => {
         loading.dismiss();
 
+        //store more items from user response
         this.nativeStorage.setItem('user', {
           name: user.displayName,
           email: user.email,
-          picture: user.imageUrl
+          picture: user.imageUrl,
+          accessToken : user.accessToken,
+          idToken: user.idToken,
+          refreshToken: user.refreshToken,
+          serverAuthCode: user.serverAuthCode,
+          userId: user.userId
         })
           .then(function(){
             nav.push(TabsPage);
