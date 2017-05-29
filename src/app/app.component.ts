@@ -8,7 +8,7 @@ import { LoginPage } from '../pages/login/login';
 import { TabsPage } from '../pages/tabs/tabs';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { LoadApi } from '../shared/shared';
-import { Http } from '@angular/http';
+import {Http,Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -30,11 +30,28 @@ export class MyApp {
       })
         .then((data) => {
 
-          // this.http.get('https://192.168.0.101:3003/api/list')
-          //   .subscribe(res => {
-          //     console.log(res)
-          //     },
-          //     error => {
+          this.http.get('https://10.162.240.253:3003/api/list')
+            .subscribe(res => {
+              console.log(res)
+              },
+              error => {
+              console.log(error);
+            });
+
+          // var headers = new Headers();
+          // headers.append("Accept", 'application/json');
+          // headers.append("Content-Type", ' application/json');
+          //
+          // let options = new RequestOptions({headers: headers});
+          //
+          // let postParams = data;
+          //
+          //
+          //
+          // this.http.post('https://10.162.240.253:3003/api/files', postParams, options)
+          //   .subscribe(data => {
+          //     console.log(data);
+          //   }, error => {
           //     console.log(error);
           //   });
       //
