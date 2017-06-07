@@ -15,7 +15,6 @@ export class UserPage {
 
   user: UserModel = new UserModel();
 
-
   constructor(public navCtrl: NavController, private nativeStorage: NativeStorage, private googlePlus: GooglePlus, public appCtrl: App) {}
 
   ionViewCanEnter() {

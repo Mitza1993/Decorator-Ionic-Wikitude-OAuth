@@ -14,6 +14,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {BrowserModule} from "@angular/platform-browser";
 import { LoadApi } from '../shared/shared';
+import { Transfer } from '@ionic-native/transfer';
+
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { LoadApi } from '../shared/shared';
     GooglePlus,
     NativeStorage,
     LoadApi,
+    Transfer,
     {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
 export class AppModule {}

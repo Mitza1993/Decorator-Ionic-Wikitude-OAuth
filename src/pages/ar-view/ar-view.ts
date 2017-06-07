@@ -46,9 +46,12 @@ export class ARView {
 
     var startupConfiguration: any = {"camera_position": "back"};
 
+    var paths = ["assets.bla", "asset2.bla"];
+
     WikitudePlugin.loadARchitectWorld(
       function(success) {
         console.log("ARchitect World loaded successfully.");
+        WikitudePlugin.callJavaScript("javascript:loadVariables("+"\""+ paths +"\")");
       },
       function(fail) {
         console.log("Failed to load ARchitect World!");
@@ -57,6 +60,11 @@ export class ARView {
       ["geo"],
       <JSON>startupConfiguration
     );
+
+    WikitudePlugin.onWikitudeOK = function() {
+      WikitudePlugin.callJavaScript("javascript:loadVariables("+"\""+ paths +"\")");
+    };
+
   }
 
 }

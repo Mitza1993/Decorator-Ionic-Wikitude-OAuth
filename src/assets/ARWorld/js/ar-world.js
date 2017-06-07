@@ -43,7 +43,7 @@ var World = {
             },
             deviceHeight: 1.0
         });
-        
+
         this.instantTrackable = new AR.InstantTrackable(this.tracker, {
             drawables: {
                 cam: crossHairsBlueDrawable,
@@ -105,38 +105,38 @@ var World = {
     },
 
     changeTrackerState: function changeTrackerStateFn() {
-        
+
         if (this.tracker.state === AR.InstantTrackerState.INITIALIZING) {
-            
+
             var els = [].slice.apply(document.getElementsByClassName("tracking-model-button-inactive"));
             for (var i = 0; i < els.length; i++) {
                 console.log(els[i]);
                 els[i].className = els[i].className = "tracking-model-button";
             }
-            
+
             document.getElementById("tracking-start-stop-button").src = "assets/buttons/stop.png";
             document.getElementById("tracking-height-slider-container").style.visibility = "hidden";
-            
+
             this.tracker.state = AR.InstantTrackerState.TRACKING;
         } else {
-            
+
             var els = [].slice.apply(document.getElementsByClassName("tracking-model-button"));
             for (var i = 0; i < els.length; i++) {
                 console.log(els[i]);
                 els[i].className = els[i].className = "tracking-model-button-inactive";
             }
-            
+
             document.getElementById("tracking-start-stop-button").src = "assets/buttons/start.png";
             document.getElementById("tracking-height-slider-container").style.visibility = "visible";
-            
+
             this.tracker.state = AR.InstantTrackerState.INITIALIZING;
         }
     },
-    
+
     changeTrackingHeight: function changeTrackingHeightFn(height) {
         this.tracker.deviceHeight = parseFloat(height);
     },
-    
+
     addModel: function addModelFn(pathIndex, xpos, ypos) {
         if (World.isTracking()) {
             var modelIndex = rotationValues.length;
@@ -164,7 +164,7 @@ var World = {
                         // We recommend setting the entire translate property rather than
                         // its individual components as the latter would cause several
                         // call to native, which can potentially lead to performance
-                        // issues on older devices. The same applied to the rotate and 
+                        // issues on older devices. The same applied to the rotate and
                         // scale property
                         this.translate = {x:intersectionX, y:intersectionY};
                     }
@@ -221,5 +221,9 @@ var World = {
         scaleValues = [];
     }
 };
+
+var loadVariables = function(params) {
+  console.log(params);
+}
 
 World.init();
