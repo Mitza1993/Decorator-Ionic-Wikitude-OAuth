@@ -1,3 +1,5 @@
+var http = new XMLHttpRequest();
+
 var defaultScaleValue = 0.045;
 var defaultRotationValue = 0;
 
@@ -16,7 +18,8 @@ AR.context.on2FingerGestureStarted = function() {
 }
 
 var World = {
-    modelPaths: ["assets/models/clock.wt3", "assets/models/couch.wt3", "assets/models/officechair.wt3", "assets/models/table.wt3", "assets/models/trainer.wt3"],
+
+    modelPaths: ["assets/models/0.wt3"],
     /*
         requestedModel is the index of the next model to be created. This is necessary because we have to wait one frame in order to pass the correct initial position to the newly created model.
         initialDrag is a boolean that serves the purpose of swiping the model into the scene. In the moment that the model is created, the drag event has already started and will not be caught by the model, so the motion has to be carried out by the tracking plane.
@@ -27,7 +30,9 @@ var World = {
     lastAddedModel: null,
 
     init: function initFn() {
-        this.createOverlays();
+      AR.logger.activateDebugMode();
+      document.location = "architectsdk://button?action=captureScreen";
+      this.createOverlays();
     },
 
     createOverlays: function createOverlaysFn() {
@@ -142,7 +147,7 @@ var World = {
             var modelIndex = rotationValues.length;
             World.addModelValues();
 
-            var model = new AR.Model(World.modelPaths[pathIndex], {
+            var model = new AR.Model("https://192.168.0.101:3003/files/clock.wt3", {
                 scale: {
                     x: defaultScaleValue,
                     y: defaultScaleValue,
@@ -219,11 +224,84 @@ var World = {
     resetAllModelValues: function resetAllModelValuesFn() {
         rotationValues = [];
         scaleValues = [];
-    }
+    },
+
+    updatePaths: function (paths) {
+      alert(paths);
+      for (var i in paths) {
+        this.modelPaths.push(paths[i]);
+      }
+    },
+
+  testFunction: function testFunctionFn(param) {
+    AR.logger.activateDebugMode();
+    AR.logger.info(param); //container name
+   //send user name to BE and return file names to download
+    this.retrieveFiles(param);
+    // for(var i = 0; i < parseInt(param)
+    // this.downloadFile(param);
+    AR.logger.info(cordova);
+    // document.location = "architectsdk://button?action=captureScreen";
+  },
+
+  retrieveFiles : function retrieveFilesFn(container) {
+      var url = "https://192.168.0.101:3003/api/store";
+      var data = {
+        name : container,
+        email: "iordache.mihaialexandru@gmail.com"
+      };
+
+      http.open("POST", url, true);
+
+      http.setRequestHeader("Accept", "application/json");
+      http.setRequestHeader("Content-type", "application/json");
+
+      http.onreadystatechange = function() {
+        if(http.readyState === 4 && http.status === 200) {
+          // alert("Models storage updated successfully!");
+          AR.logger.info(http.responseText);
+          var resp = JSON.parse(http.responseText);
+          downloadFiles(resp.items);
+        } else {
+          AR.logger.info(http.readyState.toString());
+        }
+
+      }
+      http.send(JSON.stringify(data));
+  }
 };
 
-var loadVariables = function(params) {
-  console.log(params);
+var downloadFiles = function (models) {
+  // AR.logger.info(JSON.parse(models));
+  AR.logger.info(models);
+  if(!models.length > 0) {
+    models.push("clock.wt3");
+  }
+  var fileTransfer = new FileTransfer();
+  AR.logger.info("FileTransfer" );
+  for(var i = 0; i < models.length; i ++) {
+    var uri = "https://192.168.0.101:3003/files/" + models[i];
+    fileTransfer.download(
+      uri,
+      "assets/models"
+      ,
+      function(entry) {
+        AR.logger.info("FileTransfer success");
+        // AR.logger.info(entry);
+      },
+      function(error) {
+        AR.logger.info("FileTransfer error");
+        // AR.logger.info(error);
+      },
+      true,
+      {
+        headers: {
+          "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+        }
+      }
+    );
+
+  }
 }
 
 World.init();

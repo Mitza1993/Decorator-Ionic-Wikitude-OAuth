@@ -42,6 +42,7 @@ export class MyApp {
 
       WikitudePlugin.isDeviceSupported(
           function(success) {
+            WikitudePlugin.callJavaScript(".testFunction('Screenshot saved at: "  +"');");
             console.log("Your platform supports AR/Wikitude. Have fun developing!!");
           },
           function(fail) {
@@ -71,7 +72,7 @@ export class MyApp {
 
       WikitudePlugin.onWikitudeOK = function() {
           console.log("Things went ok.");
-      }
+      };
 
 
       WikitudePlugin.onWikitudeError = function() {

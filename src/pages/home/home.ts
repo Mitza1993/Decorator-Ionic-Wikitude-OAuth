@@ -4,7 +4,7 @@ import {Http,Headers, RequestOptions} from '@angular/http';
 import { Transfer , TransferObject } from '@ionic-native/transfer';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { UserModel } from '../user/user.model';
-import { _ } from 'lodash';
+import * as _ from 'lodash';
 
 declare var cordova:any;
 
@@ -14,8 +14,8 @@ declare var cordova:any;
 })
 export class HomePage {
 
-  user: UserModel = new UserModel();
-  models: string[];
+  public user: UserModel = new UserModel();
+  public models: string[];
 
 
   constructor(public navCtrl: NavController, private nativeStorage: NativeStorage,private http: Http, private transfer: Transfer) {}
@@ -28,7 +28,7 @@ export class HomePage {
     this.nativeStorage.getItem('user')
       .then((data) => {
         this.user = data;
-        this.retrieveFiles(JSON.parse(data));
+        // this.retrieveFiles(data);
       }, function(error){
         console.log(error);
       });
@@ -43,26 +43,29 @@ export class HomePage {
     let options = new RequestOptions({headers: headers});
     let postParams = data;
 
-    this.http.post('https://10.162.240.253:3003/api/store', postParams, options)
+    this.http.post('https://192.168.0.101:3003/api/store', postParams, options)
+      .map(res => res.json())
       .subscribe(data => {
-        this.downloadModels(data);
+        this.downloadModels(data.items).then((entries) => {
+          window['entries'] = entries;
+          // WikitudePlugin.callJavaScript(`World.updatePaths(${entries})`)
+        })
       }, error => {
         console.log(error);
       });
   }
 
-  downloadModels(data) {
-    console.log(data);
+  downloadModels(data): Promise <any> {
+    let modelPromises = [];
 
-    _.forEach(data, function(item, index) {
-      let url = "https://10.162.240.253:3003/" + this.user.name.replace(/ /g,"").toLowerCase() + "/" + item;
-      this.fileTransfer.download(url, cordova.file.externalRootDirectory + "Decorator/" + data.name)
-        .then((entry) => {
-          console.log(entry);
-        }, (error) => {
-          console.log(error);
-        });
+    data.forEach( (value, key, index) => {
+      let path = 'assets/models/' + value;
+      let url = "https://192.168.0.101:3003/files/" + value;
+      modelPromises.push(
+        this.fileTransfer.download(url, cordova.file.dataDirectory + value)
+      )
     });
 
+    return Promise.all(modelPromises).then((entries) => entries);
   }
 }

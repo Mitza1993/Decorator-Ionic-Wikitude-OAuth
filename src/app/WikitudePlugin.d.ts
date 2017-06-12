@@ -1,6 +1,6 @@
 /**
  * Wrapper for the Wikitude SDK Phonegap Plugin - to use with IONIC2
- * (c) 2016 Schneeweis.Technology 
+ * (c) 2016 Schneeweis.Technology
  */
 interface WikitudePlugin {
 
@@ -23,7 +23,7 @@ interface WikitudePlugin {
   show(): void;
 
   // test type ok?
-  callJavaScript(js: any): void;
+  callJavaScript(js: string): void;
 
   setOnUrlInvokeCallback(
     onUrlInvokeCallback: (success: string) => void): void;
@@ -70,7 +70,7 @@ interface WikitudePlugin {
   CameraFocusRangeNone:number;
   CameraFocusRangeNear:number;
   CameraFocusRangeFar:number;
-    
+
 }
 
 declare var WikitudePlugin: WikitudePlugin;
